@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+<body>
+
+	<ui:composition template="/WEB-INF/templates/master.xhtml">
+		<ui:define name="content">
+			<h:form id="principal">
+
+				<center>
+					<h:panelGrid columns="6"
+						columnClasses="TabelaFormE,TabelaFormE,TabelaFormD,TabelaFormE,TabelaFormE,TabelaFormD"
+						styleClass="TabelaForm">
+						<h:outputText value="#{msg['album.nome']}" />
+			
+						<p:autoComplete minQueryLength="2"
+							value="#{albumBean.dataSearch}" var="p" itemLabel="#{p.nome}"
+							required="true" requiredMessage="Este campo é obrigatorio"
+							completeMethod="#{albumBean.autoComplete}"
+							converter="genericConverter" itemValue="#{p}"  />
+
+
+					</h:panelGrid>
+					<p:commandButton value="#{msg['button.pesquisar']}"
+						update="dataPanel :messages" ajax="true"
+						action="#{albumBean.search}" style="margin:20px;"
+						icon="iconPesquisar" />
+
+					<p:commandButton id="modalDialogButton"
+						value="#{msg['button.cadastrar']}"
+						oncomplete="modalExemplo.show();" process="@this"
+						actionListener="#{albumBean.preSave}" icon="iconCadastrar">
+					</p:commandButton>
+					<br />
+				</center>
+
+
+
+				<h:panelGroup id="dataPanel">
+					<p:dataTable id="dataTable"
+						rendered="#{not empty albumBean.listLazyDataModel }"
+						selectionMode="single" var="album"
+						value="#{albumBean.listLazyDataModel}" lazy="true"
+						paginator="true" rows="5"
+						emptyMessage="#{msg['msg.nenhum.registro']}"
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+						rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">
+						#{msg['exemplo.titulo']}
+						<div style="float:left">
+						<h:commandLink>
+								<p:graphicImage value="/resources/img/icons/excel.png" />
+								<p:dataExporter type="xls" target="dataTable" pageOnly="true"
+									fileName="Album" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:graphicImage value="/resources/img/icons/pdf.png" />
+								<p:dataExporter type="pdf" target="dataTable" pageOnly="true"
+									fileName="Album" />
+							</h:commandLink>
+							</div>
+						</f:facet>
+
+
+
+						<p:column sortBy="#{album.nome}">
+
+							<f:facet name="header">
+								<h:outputText value="#{msg['album.nome']}" />
+							</f:facet>
+							<h:outputText value="#{album.nome}" />
+						</p:column>
+
+						<p:column sortBy="#{album.descricao}">
+
+							<f:facet name="header">
+								<h:outputText value="#{msg['album.descricao']}" />
+							</f:facet>
+							<h:outputText value="#{album.descricao}" />
+						</p:column>
+
+						<p:column headerText="Ações" exportable="false">
+
+							<p:commandButton id="lnkEdit" value="#{msg['button.editar']}"
+								update=":formAddExemplo:display" process="@this"
+								oncomplete="modalExemplo.show()"
+								actionListener="#{albumBean.preEdit}" icon="iconEditar">
+								<f:setPropertyActionListener target="#{albumBean.dataEdit}"
+									value="#{album}" />
+							</p:commandButton>
+
+							<p:commandButton id="showDialogButton"
+								value="#{msg['button.deletar']}"
+								oncomplete="confirmation.show()" icon="iconExcluir">
+
+								<f:setPropertyActionListener target="#{albumBean.dataEdit}"
+									value="#{album}" />
+							</p:commandButton>
+						</p:column>
+
+
+
+
+
+					</p:dataTable>
+				</h:panelGroup>
+			</h:form>
+
+
+
+			<p:confirmDialog appendToBody="true" id="confirmDialog"
+				message="Voce Realmente quer deletar o registro?"
+				header="Remoação de exemplo" severity="alert"
+				widgetVar="confirmation">
+
+				<p:commandButton id="confirm" value="#{msg['button.sim']}"
+					update=":principal:dataPanel :messages"
+					oncomplete="confirmation.hide()"
+					actionListener="#{albumBean.delete}" />
+				<p:commandButton id="decline" value="#{msg['button.nao']}"
+					onclick="confirmation.hide()" />
+
+			</p:confirmDialog>
+
+
+			<p:dialog id="modalAddExemplo" header="#{msg['album.titulo']}"
+				widgetVar="modalExemplo" modal="true" appendToBody="true"
+				position="center" minHeight="200" minWidth="300">
+				<h:form id="formAddExemplo">
+					<h:panelGrid id="display">
+						<h:outputText value="#{msg['exemplo.nome']}" />
+
+						<p:inputText id="nome" value="#{albumBean.dataEdit.nome}"></p:inputText>
+						<h:outputText value="#{msg['album.descricao']}" />
+						<p:inputText id="idade" value="#{albumBean.dataEdit.descricao}"></p:inputText>
+						<p:commandButton oncomplete="modalExemplo.hide()"
+							value="#{albumBean.dataEdit.nome==null?msg['button.cadastrar']:'atualizar'}"
+							update=":principal:dataPanel :messages"
+							action="#{albumBean.save}" />
+					</h:panelGrid>
+				</h:form>
+
+			</p:dialog>
+
+
+
+		</ui:define>
+	</ui:composition>
+
+
+</body>
+</html>

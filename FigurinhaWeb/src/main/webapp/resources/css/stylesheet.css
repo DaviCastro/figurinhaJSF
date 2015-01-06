@@ -1,0 +1,82 @@
+.ui-widget,.ui-widget .ui-widget {
+	font-size: 12px !important;
+}
+
+.ui-menubar,.ui-menuitem-link,.ui-menu-list,.ui-menu-child {
+    border: 0px solid #aed0ea !important;
+    background: #969694 !important;"
+    font-weight: bolder !important;
+    font-size: 15px !important;
+}
+
+/**/
+.ui-layout-unit-content{
+	/*background-color: red;*/
+	
+}
+.ui-autocomplete-input{
+	width: 80% !important;
+}
+
+.ui-dialog {
+    width: auto !important;
+}
+
+
+.TabelaForm {
+	BORDER-RIGHT: silver 1px solid;
+	BORDER-TOP: silver 1px solid;
+	BORDER-LEFT: silver 1px solid;
+	BORDER-BOTTOM: silver 1px solid;
+	text-align: center;
+	width: 85%
+	
+}
+
+.TabelaFormE {
+	FONT-WEIGHT: bold;
+	FONT-SIZE: 12px;
+	BACKGROUND: #f7f7f7;
+	COLOR: #4e4e4e;
+	FONT-FAMILY: verdana;
+	TEXT-ALIGN: right;
+}
+
+.TabelaFormD {
+	FONT-WEIGHT: bold;
+	FONT-SIZE: 12px;
+	BACKGROUND: #ffffff;
+	COLOR: #4e4e4e;
+	FONT-FAMILY: verdana;
+	TEXT-ALIGN: left;
+	width: 35%;
+}
+
+.medio {
+	width: 80%;
+}
+
+.iconCadastrar {  
+    background-image: url("../resources/img/icons/add.png") !important;  
+}
+
+.iconEditar {  
+    background-image: url("../resources/img/icons/edit.png") !important;  
+}
+
+.iconExcluir {  
+    background-image: url("../resources/img/icons/delete.png") !important;  
+}
+
+.iconPesquisar {  
+    background-image: url("../resources/img/icons/find.png") !important;  
+}
+
+
+.iconPdf{
+	background-image: url("../resources/img/icons/pdf.png") !important;  
+}
+
+.iconExcel{
+	background-image: url("../resources/img/icons/excel.png") !important;  
+}

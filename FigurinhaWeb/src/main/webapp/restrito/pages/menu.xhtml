@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+<body>
+
+	<ui:composition template="/WEB-INF/templates/master.xhtml">
+		<ui:define name="content">
+			<h:form id="principal">
+
+				<center>
+
+					PESQUISA
+
+					<p:commandButton value="#{msg['button.pesquisar']}"
+						update="dataPanel :messages" ajax="true" action="#{menuBean.search}"
+						style="margin:20px;" icon="iconPesquisar" />
+
+					<p:commandButton id="modalDialogButton"
+						value="#{msg['button.cadastrar']}" oncomplete="modalMenu.show();"
+						process="@this" actionListener="#{menuBean.preSave}"
+						icon="iconCadastrar">
+					</p:commandButton>
+					<br />
+
+				</center>
+				
+				
+				<h:panelGroup id="dataPanel">
+					<p:dataTable id="dataTable"
+						rendered="#{not empty menuBean.listLazyDataModel }"
+						selectionMode="single" var="menu"
+						value="#{menuBean.listLazyDataModel}" lazy="true"
+						paginator="true" rows="5"
+						emptyMessage="#{msg['msg.nenhum.registro']}"
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+						rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">
+						#{msg['menu.titulo']}
+						<div style="float:left">
+						<h:commandLink>
+								<p:graphicImage value="/resources/img/icons/excel.png" />
+								<p:dataExporter type="xls" target="dataTable" pageOnly="true"
+									fileName="menu" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:graphicImage value="/resources/img/icons/pdf.png" />
+								<p:dataExporter type="pdf" target="dataTable" pageOnly="true"
+									fileName="menu" />
+							</h:commandLink>
+							</div>
+						</f:facet>
+
+						<p:column sortBy="#{menu.nome}">
+
+							<f:facet name="header">
+								<h:outputText value="#{msg['menu.nome']}" />
+							</f:facet>
+							<h:outputText value="#{menu.nome}" />
+						</p:column>
+
+
+						<p:column headerText="Ações" exportable="false">
+
+							<p:commandButton id="lnkEdit" value="#{msg['button.editar']}"
+								update=":formAddMenu" process="@this"
+								oncomplete="modalMenu.show()"
+								actionListener="#{menuBean.preEdit}" icon="iconEditar">
+								<f:setPropertyActionListener target="#{menuBean.dataEdit}"
+									value="#{menu}" />
+							</p:commandButton>
+
+							<p:commandButton id="showDialogButton"
+								value="#{msg['button.deletar']}"
+								oncomplete="confirmation.show()" icon="iconExcluir">
+
+								<f:setPropertyActionListener target="#{menuBean.dataEdit}"
+									value="#{menu}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:panelGroup>
+				
+			</h:form>
+
+			<p:dialog id="modalAddMenu" header="#{msg['menu.titulo']}"
+				widgetVar="modalMenu" modal="true" appendToBody="true"
+				position="center" minHeight="200" minWidth="300">
+				<h:form id="formAddMenu" >
+					 <p:messages id="messagesLocal" closable="true" />
+					 <h:inputHidden value="#{menuBean.initModalMenu}" />
+					<h:panelGrid id="display" columns="2">
+						<h:panelGroup>
+							<h:outputText value="#{msg['menu.nome']}" />
+							<p:inputText id="nome" value="#{menuBean.dataEdit.nome}"></p:inputText>
+						</h:panelGroup>
+
+						<p:tree id="treeSingle" value="#{menuBean.root}" var="node"
+							style="width:100%" selectionMode="checkbox"
+							propagateSelectionDown="false" propagateSelectionUp="false"
+							selection="#{menuBean.nosSelecionados}">
+
+							<p:ajax event="select" update=":formAddMenu:messagesLocal @this"
+								listener="#{menuBean.onNodeSelect}" />
+							<p:ajax event="unselect"
+								update=":formAddMenu:messagesLocal @this"
+								listener="#{menuBean.onNodeUnselect}" />
+
+							<p:treeNode>
+								<h:outputText value="#{node}" />
+							</p:treeNode>
+						</p:tree>
+
+						<p:pickList id="pickList" value="#{menuBean.pickArquivos}"
+							var="arquivo" itemLabel="#{arquivo}" itemValue="#{arquivo}"
+							style="width:70%">
+							<p:ajax event="transfer" listener="#{menuBean.onTransfer}"
+								update="formAddMenu:messagesLocal" />
+						</p:pickList>
+
+						<p:pickList id="pickPermissoes" value="#{menuBean.pickRoles}"
+							var="permissao" itemLabel="#{permissao}" itemValue="#{permissao}"
+							style="width:70%">
+						</p:pickList>
+
+						<h:outputText value="" />
+
+
+					</h:panelGrid>
+					
+					<br/>
+					<center>
+					<p:commandButton oncomplete="modalMenu.hide()"
+						value="#{menuBean.dataEdit.nome==null?msg['button.cadastrar']:'atualizar'}"
+						update=":principal:dataPanel :messages :idMenu" action="#{menuBean.save}" />
+					</center>
+					<br/>
+				</h:form>
+			</p:dialog>
+
+
+
+		</ui:define>
+	</ui:composition>
+</body>
+
+</html>

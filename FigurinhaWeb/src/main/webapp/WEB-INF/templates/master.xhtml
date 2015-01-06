@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html"
+	locale="#{localeController.currentLocale}" />
+<h:head>
+	<!-- <link type="text/css" rel="stylesheet" href="#{request.contextPath}/themes/cupertino/skin.css"/>pepper-grinder -->
+	<style type="text/css">
+                .ui-layout-north {
+                    z-index:20 !important;
+                    overflow:visible !important;;
+                }
+
+                .ui-layout-north .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+      </style>
+</h:head>
+<body>
+	<f:facet name="last">
+		<h:outputStylesheet library="css" name="stylesheet.css" />
+	</f:facet>
+	<p:layout fullPage="true" >
+		<p:layoutUnit position="north" size="20%">
+			<div id="topo">
+				<ui:insert name="header">
+					<ui:include src="/WEB-INF/templates/header.xhtml">
+					</ui:include>
+				</ui:insert>
+			</div>
+		</p:layoutUnit>
+
+
+		<p:layoutUnit position="center"   style="margin:10px;">
+			<div id="corpo">
+				<p:menubar model="#{menuBean.model}"  id="idMenu"/>
+				<p:messages id="messages" autoUpdate="true"  closable="true" />
+				<br/>
+				<ui:insert name="content">
+					<ui:include src="/WEB-INF/templates/content.xhtml">
+					</ui:include>
+				</ui:insert>
+			</div>
+		</p:layoutUnit>
+
+
+		<p:layoutUnit position="south">
+			<div id="rodape">
+				<ui:insert name="footer">
+					<ui:include src="/WEB-INF/templates/footer.xhtml"></ui:include>
+				</ui:insert>
+			</div>
+		</p:layoutUnit>
+	</p:layout>
+</body>
+</html>

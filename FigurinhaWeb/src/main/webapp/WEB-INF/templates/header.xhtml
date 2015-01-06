@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<body>
+
+	<!--.ui-widget-content -->
+
+	<ui:composition>
+
+		<p:layout>
+
+			<p:layoutUnit position="west" size="50%"
+				style="border:0px !important;">
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center" size="0%"
+				style="border:0px !important;"></p:layoutUnit>
+
+			<p:layoutUnit position="east" size="50%"
+				style="border:0px !important;">
+				<h:form style="float:right;">
+					<h:panelGrid columns="2">
+
+						<h:outputText value="#{msg['label.linguagem']}" />
+						<p:selectOneMenu value="#{localeController.currentLocale}"
+							panelStyle="width:150px" effect="fade" var="p"
+							style="width:160px" filter="true" filterMatchMode="startsWith"
+							valueChangeListener="#{localeController.countryLocaleCodeChanged}">
+							<f:selectItems value="#{localeController.countriesInMap}" />
+							<p:ajax update="@all" event="change"></p:ajax>
+						</p:selectOneMenu>
+
+					</h:panelGrid>
+
+					<p:outputPanel rendered="#{loginBean.usuarioLogado}">
+
+						<h:panelGrid columns="2">
+
+							<p:outputLabel value=" Bem vindo,"></p:outputLabel>
+							<p:outputLabel id="txtUsuario" value="  #{loginBean.nomeUsuario}"
+								style="color: red;font-weight:bolder;"></p:outputLabel>
+
+							<p:overlayPanel id="acoesUsuario" for="txtUsuario"
+								showEvent="mouseover" hideEvent="mousedown" hideEffect="fade"
+								dynamic="true" style="width:200px;height:80px">
+
+
+								<p:commandButton value="Sair" action="#{loginBean.doLogout}"
+									ajax="false" />
+							</p:overlayPanel>
+
+
+						</h:panelGrid>
+
+					</p:outputPanel>
+				</h:form>
+			</p:layoutUnit>
+
+		</p:layout>
+
+
+	</ui:composition>
+
+
+</body>
+</html>

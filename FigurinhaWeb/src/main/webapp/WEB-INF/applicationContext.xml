@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<bean id="medicalDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:comp/env/jdbc/medicalDB</value>
+		</property>
+	</bean>
+
+	<!-- You will need to inject your RoleHierarchyImpl into a Voter implementation. 
+		The Voter will be injected into an AccessDecissionManager. You can use http@access-decision-manager-ref 
+		to make Spring Security aware of the AccessDecissionManager. The Voter implementation 
+		will depend if you want to use expressions or not. If you are using expressions 
+		you will use the WebExpressionVoter. You will need to inject the RoleHierarchy 
+		into a DefaultWebSecurityExpressionHandler which is injected into the WebExpressionVoter. 
+		Otherwise, if you are not using expressions, you will inject the RoleHierarchy 
+		into a RoleHierarchyVoter. You will likely also want to inject the AuthenticatedVoter 
+		if using this approach. HTH, http://forum.springsource.org/archive/index.php/t-98223.html -->
+
+	<bean id="roleVoter"
+		class="org.springframework.security.access.vote.RoleHierarchyVoter">
+		<constructor-arg ref="roleHierarchy">
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="roleHierarchy"
+		class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+		<property name="hierarchy">
+			<value>
+				ROLE_ADMIN > ROLE_USER
+				ROLE_ADMIN > ROLE_USER2
+			</value>
+		</property>
+	</bean>
+
+
+	<bean id="methodSecurityExpressionHandler"
+		class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+		<property name="roleHierarchy" >
+		<ref bean="roleHierarchy"/>
+		</property>
+	</bean>
+
+	<bean id="webExpressionHandler"
+		class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
+		<property name="roleHierarchy" ref="roleHierarchy" />
+	</bean>
+
+
+
+	<bean id="accessDecisionManager"
+		class="org.springframework.security.access.vote.AffirmativeBased">
+		<property name="decisionVoters">
+			<list>
+				<ref bean="roleVoter" />
+				<bean
+					class="org.springframework.security.web.access.expression.WebExpressionVoter">
+					<property name="expressionHandler" ref="webExpressionHandler" />
+				</bean>
+				<bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+
+			</list>
+		</property>
+	</bean>
+
+
+
+</beans>
+

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<!-- <link type="text/css" rel="stylesheet" href="#{request.contextPath}/themes/cupertino/skin.css"/>pepper-grinder -->
+</h:head>
+
+<body>
+	<f:facet name="last">
+		<h:outputStylesheet library="css" name="stylesheet.css" />
+	</f:facet>
+
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" size="20%">
+			<div id="topo">
+				<ui:include src="/WEB-INF/templates/header.xhtml" />
+			</div>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" style="margin:10px;">
+			<center>
+				<f:view>
+					<h:form id="principal">
+						<p:messages closable="true" autoUpdate="true" />
+						<h:panelGrid columns="2">
+							<h:outputLabel value="#{msg['label.login']}"
+								for="##{msg['label.login']}" />
+							<p:inputText id="j_username" value="#{loginBean.username}"
+								required="false" />
+							<h:outputLabel value="#{msg['label.senha']}" for="j_password" />
+
+							<p:keyboard value="#{loginBean.password}" id="j_password"
+								password="true" required="false" />
+						</h:panelGrid>
+						<p:commandButton value="Login" action="#{loginBean.doLogin}"
+							ajax="false" />
+						<p:commandButton id="modalDialogButton"
+							value="#{msg['button.cadastrar']}"
+							oncomplete="modalUsuario.show();" process="@this"
+							actionListener="#{usuarioBean.preSave}" update=":subForm"
+							icon="iconCadastrar">
+						</p:commandButton>
+					</h:form>
+				</f:view>
+			</center>
+		</p:layoutUnit>
+	</p:layout>
+
+
+
+	<p:dialog id="modalAddUsuario" header="#{msg['usuario.add.titulo']}"
+		widgetVar="modalUsuario" modal="true" appendToBody="true">
+		<h:form id="subForm">
+			<p:tabView id="tabView">
+
+				<p:tab id="usuario" title="Usuario">
+
+					<h:panelGrid columns="2">
+						<h:outputText value="#{msg['usuario.login']}" />
+						<p:inputText id="txtLogin" value="#{usuarioBean.dataEdit.login}"
+							required="true"></p:inputText>
+
+						<h:outputText value="#{msg['usuario.email']}" />
+						<p:inputText id="txtEmail" value="#{usuarioBean.dataEdit.email}"
+							required="true" />
+
+
+						<h:outputText value="#{msg['usuario.senha']}" />
+						<p:password id="txtSenha" value="#{usuarioBean.dataEdit.senha}"
+							required="true" />
+
+						<h:outputText value="#{msg['usuario.senhaConfirma']}" />
+						<p:password id="txtSenhaConfirma"
+							value="#{usuarioBean.confirmacaoSenha}" required="true" />
+
+
+
+
+
+						<p:commandButton oncomplete="modalUsuario.hide()"
+							value="#{msg['button.cadastrar']}" 
+							action="#{usuarioBean.novoUsuario}" update=":principal" />
+					</h:panelGrid>
+				</p:tab>
+
+			</p:tabView>
+		</h:form>
+
+	</p:dialog>
+
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#restrito#pages#exemploSucesso.xhtml"
+  PATH="/restrito/pages/exemploSucesso.xhtml" SHAPE="256,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#restrito#pages#exemplo.xhtml"
+  PATH="/restrito/pages/exemplo.xhtml" SHAPE="256,177,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#restrito#pages#exemplo.xhtml:0" NAME="item"
+   PATH="/restrito/pages/exemplo.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="exemploSucesso::#restrito#pages#exemploSucesso.xhtml"
+    NAME="output" PATH="/restrito/pages/exemploSucesso.xhtml"
+    TARGET="rules:#restrito#pages#exemploSucesso.xhtml"
+    TITLE="exemploSucesso" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="novo::#restrito#pages#exemplo.xhtml"
+    NAME="output1" PATH="/restrito/pages/exemplo.xhtml"
+    TARGET="rules:#restrito#pages#exemplo.xhtml" TITLE="novo" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="usuario::#publico#pages#usuario.xhtml"
+    NAME="output2" PATH="/publico/pages/usuario.xhtml"
+    TARGET="rules:#publico#pages#usuario.xhtml" TITLE="usuario" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="usuarioConfirmado::#publico#pages#login.xhtml" NAME="output3"
+    PATH="/publico/pages/login.xhtml"
+    TARGET="rules:#publico#pages#login.xhtml" TITLE="usuarioConfirmado" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#publico#pages#usuario.xhtml"
+  PATH="/publico/pages/usuario.xhtml" SHAPE="480,129,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#publico#pages#login.xhtml"
+  PATH="/publico/pages/login.xhtml" SHAPE="496,337,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

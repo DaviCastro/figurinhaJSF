@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+<body>
+
+	<ui:composition template="/WEB-INF/templates/master.xhtml">
+		<ui:define name="content">
+			<h:form id="principal">
+
+				<center>
+					<h:panelGrid columns="6"
+						columnClasses="TabelaFormE,TabelaFormE,TabelaFormD,TabelaFormE,TabelaFormE,TabelaFormD"
+						styleClass="TabelaForm">
+						<h:outputText value="#{msg['usuario.login']}" />
+						<h:outputLabel value="" />
+						<p:inputText value="#{usuarioBean.dataSearch.login}"></p:inputText>
+
+						<h:outputText value="#{msg['usuario.ativo']}" />
+						<h:outputLabel value="" />
+						<h:selectBooleanCheckbox value="#{usuarioBean.dataSearch.ativo}" />
+					</h:panelGrid>
+
+					<p:commandButton value="#{msg['button.pesquisar']}"
+						update="dataPanel :messages" ajax="true"
+						action="#{usuarioBean.search}" style="margin:20px;" icon="iconPesquisar"/>
+
+					<p:commandButton id="modalDialogButton"
+						value="#{msg['button.cadastrar']}"
+						oncomplete="modalUsuario.show();" process="@this"
+						actionListener="#{usuarioBean.preSave}" update=":subForm" icon="iconCadastrar">
+					</p:commandButton>
+
+				</center>
+
+				<h:panelGroup id="dataPanel">
+					<p:dataTable id="dataTable" selectionMode="single"
+						resizableColumns="true" var="usuario"
+						value="#{usuarioBean.listLazyDataModel}"
+						rendered="#{not empty usuarioBean.listLazyDataModel}"
+						paginator="true" rows="5" lazy="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">
+						#{msg['usuario.add.titulo']}
+					</f:facet>
+
+						<p:column sortBy="#{usuario.login}"
+							headerText="#{msg['usuario.login']}">
+							<h:outputText value="#{usuario.login}" />
+						</p:column>
+
+						<p:column sortBy="#{usuario.ativo}"
+							headerText="#{msg['usuario.ativo']}">
+							<h:outputText value="#{usuario.ativo}" />
+						</p:column>
+
+						<p:column headerText="Ações">
+
+							<p:commandButton id="lnkEdit" value="#{msg['button.editar']}"
+								update=":subForm" process="@this"
+								oncomplete="modalUsuario.show()" icon="iconEditar">
+								<f:setPropertyActionListener target="#{usuarioBean.dataEdit}"
+									value="#{usuario}" />
+							</p:commandButton>
+
+
+							<p:commandButton id="lnkExcluir" value="#{msg['button.deletar']}"
+								oncomplete="confirmation.show()" icon="iconExcluir">
+
+								<f:setPropertyActionListener target="#{usuarioBean.dataEdit}"
+									value="#{usuario}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:panelGroup>
+
+			</h:form>
+
+			
+			<p:confirmDialog appendToBody="true" id="confirmDialog"
+				message="Voce Realmente quer deletar o registro?"
+				header="Remoção de usuário" severity="alert"
+				widgetVar="confirmation">
+
+				<p:commandButton id="confirm" value="#{msg['button.sim']}"
+					update=":principal:dataPanel :messages" oncomplete="confirmation.hide()"
+					actionListener="#{usuarioBean.delete}" />
+				<p:commandButton id="decline" value="#{msg['button.nao']}"
+					onclick="confirmation.hide()" />
+
+			</p:confirmDialog>
+
+
+
+			<p:dialog id="modalAddUsuario" header="#{msg['usuario.add.titulo']}"
+				widgetVar="modalUsuario" modal="true" appendToBody="true">
+				<h:form id="subForm">
+					<p:tabView id="tabView">
+
+						<p:tab id="usuario" title="Usuario">
+
+							<h:panelGrid columns="2">
+								<h:outputText value="#{msg['usuario.login']}" />
+								<p:inputText id="txtLogin" value="#{usuarioBean.dataEdit.login}"
+									required="true"></p:inputText>
+
+								<h:outputText value="#{msg['usuario.senha']}" />
+								<h:inputSecret id="txtSenha"
+									value="#{usuarioBean.dataEdit.senha}" required="true" />
+
+								<h:outputText value="#{msg['usuario.senhaConfirma']}" />
+								<h:inputSecret id="txtSenhaConfirma"
+									value="#{usuarioBean.confirmacaoSenha}" required="true" />
+
+								<h:outputText value="#{msg['usuario.ativo']}" />
+								<h:selectBooleanCheckbox value="#{usuarioBean.dataEdit.ativo}" />
+
+
+
+
+								<p:commandButton oncomplete="modalUsuario.hide()"
+									value="#{usuarioBean.dataEdit.login==null?msg['button.cadastrar']:'atualizar'}"
+									action="#{usuarioBean.save}" />
+							</h:panelGrid>
+						</p:tab>
+						<p:tab id="permissao" title="Permissões">
+
+							<p:selectManyCheckbox
+								value="#{usuarioBean.permissoesSelecionadas}"
+								layout="pageDirection">
+								<f:selectItems value="#{usuarioBean.permissoes}" />
+							</p:selectManyCheckbox>
+
+						</p:tab>
+
+
+
+					</p:tabView>
+				</h:form>
+
+			</p:dialog>
+
+		</ui:define>
+	</ui:composition>
+</body>
+
+</html>

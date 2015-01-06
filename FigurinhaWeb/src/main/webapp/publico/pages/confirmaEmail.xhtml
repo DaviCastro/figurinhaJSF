@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+  
+	<!-- <link type="text/css" rel="stylesheet" href="#{request.contextPath}/themes/cupertino/skin.css"/>pepper-grinder -->
+</h:head>
+
+<body>
+	<f:facet name="last">
+		<h:outputStylesheet library="css" name="stylesheet.css" />
+	</f:facet>
+
+<f:metadata>    
+    <f:event type="preRenderView" listener="#{usuarioBean.confirmacaoCadastroPorEmail}"/>    
+</f:metadata> 
+
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" size="20%">
+			<div id="topo">
+			
+				<ui:include src="/WEB-INF/templates/header.xhtml" />
+			</div>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" style="margin:10px;">
+		
+			<center>
+				<f:view>
+				<p:messages closable="true" autoUpdate="true"></p:messages>
+
+				</f:view>
+			</center>
+		</p:layoutUnit>
+	</p:layout>
+
+
+
+
+
+
+</body>
+</html>
