@@ -6,8 +6,9 @@ figurinhaJSF
 * TOMCAT
 * HIBERNATE
 * DB4O
+* JPA
 * PRIMEFACES
-- Projeto adptado para utilização de banco orientado e objetos(DB4O) e banco relacional (MYSQL-HIBERNATE) com apenas uma configuração (GENERICDAO)
+- Projeto adptado para utilização de banco orientado e objetos(DB4O) e banco relacional (HIBERNATE) com apenas uma configuração (GENERICDAO)
 - Anotações interessantes para autoComplete primefaces
 - Generic Converter JSF
 - Escalonador Quartz
