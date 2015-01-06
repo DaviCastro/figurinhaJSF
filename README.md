@@ -5,3 +5,4 @@ figurinhaJSF
 * JSF
 * TOMCAT
 * HIBERNATE
+* DB4O
